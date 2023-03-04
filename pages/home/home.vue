@@ -1,5 +1,9 @@
 <template>
 	<view>
+		<view class="search-box">
+			<my-search @search="navigatorSearch"></my-search>
+		</view>
+
 		<swiper :indicator-dots="true" :autoplay="true" :interval="3000" :duration="1000">
 			<swiper-item v-for="(value,index) in swiperList">
 				<navigator :url="'/subpkg/goods_detail/goods_detail?id='+value.goods_id">
@@ -102,6 +106,14 @@
 				})
 				this.flootList = res.data.message
 				console.log(this.flootList)
+			},
+			navigatorSearch() {
+
+				uni.navigateTo({
+					url: '/subpkg/search/search'
+				})
+
+
 			}
 
 		}
@@ -109,6 +121,12 @@
 </script>
 
 <style lang="scss">
+	.search-box {
+		position: sticky;
+		top: 0;
+		z-index: 999;
+	}
+
 	.nav-list {
 		display: flex;
 		justify-content: space-around;

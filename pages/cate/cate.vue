@@ -1,5 +1,6 @@
 <template>
 	<view>
+		<my-search></my-search>
 		<view class="scroll-view-contain">
 			<scroll-view scroll-y="true" :style="{height:height+'px'}" class="scroll-left">
 				<view :class="['left-scroll-item',index===leftActive?'active':'']" v-for="(item,index) in cateList"
@@ -48,7 +49,7 @@
 		methods: {
 			getHeight() {
 				const res = uni.getSystemInfoSync()
-				this.height = res.windowHeight
+				this.height = res.windowHeight - 30
 			},
 			async getCateList() {
 				const res = await uni.$http.get('/api/public/v1/categories')
