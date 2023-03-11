@@ -1,15 +1,7 @@
 <template>
 	<view>
-		<view class="goods-List">
-			<view class="goods-item" v-for="(item,index) in goodlist" :key="index" @click="gotoDetail(item)">
-				<view class="goods-left">
-					<image :src="item.goods_small_logo" mode=""></image>
-				</view>
-				<view class="goods-right">
-					<text class="title">{{item.goods_name}}</text>
-					<text class="price">${{item.goods_price}}</text>
-				</view>
-			</view>
+		<view class="goods-List" v-for="(item,index) in goodlist" :key="index">
+			<my-goods :isCart="false" :goods="item" @click="gotoDetail(item)"></my-goods>
 
 		</view>
 	</view>
@@ -43,12 +35,7 @@
 		},
 
 		methods: {
-			gotoDetail(item) {
-				console.log(item.goods_id)
-				uni.navigateTo({
-					url: '/subpkg/goods_detail/goods_detail?goods_id=' + item.goods_id
-				})
-			},
+
 			async getGoodsList(fun) {
 
 				this.isLoading = true
@@ -56,7 +43,6 @@
 				this.goodlist = [...this.goodlist, ...res.data.message.goods]
 				this.total = res.data.message.total
 				this.isLoading = false
-				console.log(fun)
 				fun && fun()
 
 

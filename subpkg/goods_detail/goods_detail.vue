@@ -33,9 +33,11 @@
 
 <script>
 	export default {
+
 		data() {
 			return {
 				goodsdeatil: {},
+				total: 0,
 				options: [{
 						text: '客服',
 						icon: 'headphones'
@@ -48,7 +50,7 @@
 					{
 						text: '购物车',
 						icon: 'cart',
-						info: '2'
+						info: 0
 					}
 				],
 				buttonGroup: [{
@@ -68,11 +70,36 @@
 
 			this.getGoodsDetail(options.goods_id)
 		},
+		watch: {
+			total(newvalue, oldvaule) {
+				this.options.forEach((item) => {
+					if (item.text === '购物车') {
+						item.info = newvalue
+					}
+				})
+			}
+		},
 		methods: {
+			buttonClick(e) {
+				if (e.content.text === "加入购物车") {
+					this.$store.commit('modulecart/addToCart', this.goodsdeatil)
+					this.$store.commit("modulecart/saveStorage")
+				}
+				this.total = 0
+				this.$store.state.modulecart.cart.forEach((item) => {
+					this.total += item.goods_count
+				})
+
+
+			},
 			async getGoodsDetail(id) {
+				this.total = 0
+				this.$store.state.modulecart.cart.forEach((item) => {
+					this.total += item.goods_count
+				})
 				const res = await uni.$http.get('/api/public/v1/goods/detail?goods_id=' + id)
 				this.goodsdeatil = res.data.message
-				console.log(res)
+
 			},
 			onClick(e) {
 				if (e.content.text === '购物车') {
